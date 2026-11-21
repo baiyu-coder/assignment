@@ -219,13 +219,20 @@ static void MX_GPIO_Init(void)
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
   /* USER CODE END MX_GPIO_Init_2 */
+  
 }
 
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);
+	if(htim->Instance==TIM2)
+	{
+		HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);
+	}
 }
+
+
+
 /* USER CODE END 4 */
 
 /**

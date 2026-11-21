@@ -54,8 +54,7 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint32_t last;
-uint32_t now;
+volatile uint16_t flag;
 
 /* USER CODE END 0 */
 
@@ -99,6 +98,18 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  if(flag==1)
+	  {
+		  HAL_Delay(20);
+		  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8)==0)
+		  {
+			  HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);
+			flag=0;
+		  }
+		  else 
+			flag=0;
+			  
+	  }
   }
   /* USER CODE END 3 */
 }
@@ -180,23 +191,19 @@ static void MX_GPIO_Init(void)
   HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
+
   /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-{ 
-	now=HAL_GetTick();
-
-	if(now-last>=20)
+{
+	if(GPIO_Pin==GPIO_PIN_8)
 	{
-		last=now;
-		
-		HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_12);
+		flag=1;
 	}
 }
-		
-		
+	
 
 
 /* USER CODE END 4 */
